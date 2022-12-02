@@ -1,0 +1,28 @@
+pub fn factors(mut m: u64) -> Vec<u64> {
+    let mut factors = vec![];
+    let primes = primes(m);
+    for i in primes {
+        while m%i == 0 {
+            factors.push(i);
+            m = m/i;
+        }
+        if m==1 { break}
+    }
+    factors
+}
+
+
+
+fn primes(n: u64) -> Vec<u64> {
+    if n<2 {return vec![]}
+    let mut count = 0;
+    let lim = (n as f64).sqrt() as u64;
+    let mut lst: Vec<u64> = (2..n).collect();
+    let mut m = lst[count];
+    while m <= lim { // need to split the vec at the m for faster results
+        count+=1;
+        lst = lst[count..].into_iter().filter(|&x| x%m != 0).map(|&x| x).collect::<Vec<_>>();
+        m = *lst.get(count).unwrap();
+    }
+    lst
+}
